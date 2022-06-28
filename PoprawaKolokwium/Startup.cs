@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PoprawaKolokwium.Context;
+using PoprawaKolokwium.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace PoprawaKolokwium
             {
                 option.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddScoped<IDbService, DbService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
