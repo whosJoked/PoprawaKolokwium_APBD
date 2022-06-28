@@ -8,6 +8,5 @@ namespace PoprawaKolokwium.Models.DTOs
         public string Description { get; set; }
         public ICollection<MemberDTO> Members { get; set; }
         public OrganizationDTO Organization { get; set; }
-        public MembershipDTO Membership { get; set; }
     }
 }

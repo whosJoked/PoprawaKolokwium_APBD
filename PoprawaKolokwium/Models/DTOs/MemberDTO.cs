@@ -1,4 +1,6 @@
-﻿namespace PoprawaKolokwium.Models.DTOs
+﻿using System;
+
+namespace PoprawaKolokwium.Models.DTOs
 {
     public class MemberDTO
     {

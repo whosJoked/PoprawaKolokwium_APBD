@@ -1,4 +1,6 @@
-﻿using PoprawaKolokwium.Context;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using PoprawaKolokwium.Context;
 using PoprawaKolokwium.Models.DTOs;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,30 +15,26 @@ namespace PoprawaKolokwium.Services
         {
             _kolDbContext = kolDbContext;
         }
-
-        public Task<TeamDTO> GetTeamById(int teamId)
+        public async Task<TeamDTO> GetTeamById(int teamId)
         {
-            throw new System.NotImplementedException();
+            var team = await _kolDbContext.Team.Where(o => o.TeamId == teamId).Select(o => new TeamDTO
+            {
+                Name = o.TeamName,
+                Description = o.TeamDescription,
+                Members = o.Members.Select(o => new MemberDTO
+                {
+                    MemberName = o.MemberName,
+                }).ToList(),
+                Organization = new OrganizationDTO
+                {
+                    Name = o.Organization.OrganizationName
+                }
+            }).SingleOrDefaultAsync();
+
+            if (team == null)
+                throw new BadHttpRequestException("Team does not exist", 400);
+
+            return team;
         }
-        //public async Task<TeamDTO> GetTeamById(int teamId)
-        //{
-        //    var team = await _kolDbContext.Team.Where(o => o.TeamId == teamId).Select(o => new TeamDTO
-        //    {
-        //        Name = o.TeamName,
-        //        Description = o.TeamDescription,
-        //        Members = o.Members.Select(o => new MemberDTO
-        //        {
-        //            MemberName = o.MemberName,
-        //        }).ToList(),
-        //        Organization = new OrganizationDTO
-        //        {
-        //            Name = o.Organization.OrganizationName
-        //        },
-        //        Membership = new MembershipDTO
-        //        {
-        //            MembershipDate = o.Membership.MembershipDate
-        //        }
-        //    });
-        //}
     }
 }
